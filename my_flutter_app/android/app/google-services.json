@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "109992796342",
+    "project_id": "medical-community-c4b5c",
+    "storage_bucket": "medical-community-c4b5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109992796342:android:8e657957f892bdc4d5c617",
+        "android_client_info": {
+          "package_name": "com.example.my_flutter_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi5yEKYaZg5vwPqoVka32uHuTaqSlpJX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
