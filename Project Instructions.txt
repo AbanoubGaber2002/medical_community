@@ -1,0 +1,23 @@
+First Step:
+Ensure You Are Install in Your Device Visual Studio Code , Flutter Package , Python
+
+Secound Step:
+Install Flutter Project
+
+Third Step:
+Create A Folder named anything and put in API.py and ProjectDB.csv and Put Them Beside Flutter Project
+
+Fourth Step:
+Ensure Flask Library and Pandas Library Installed
+
+Fifth Step:
+Open API.py in VSCode and Running With Command: python API.py
+Note: Ensure You in API.py Directory
+
+Sixth Step:
+Go To in Directory in This Flutter Project Open it in VSCode
+And
+Write in VSCode Terminal This Command: flutter pub get
+
+Seventh Step:
+Write in VSCode Terminal This Command: flutter run
