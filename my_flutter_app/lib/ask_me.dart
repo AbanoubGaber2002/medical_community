@@ -45,7 +45,7 @@ class _AskMeState extends State<AskMe> {
   @override
   void initState() {
     super.initState();
-    _apiData = MyApiData('http://127.0.0.1:5000/predict');
+    _apiData = MyApiData('http://10.0.2.2:5000/predict');
     _addBotResponse(questions[currentQuestionIndex]);
   }
 
