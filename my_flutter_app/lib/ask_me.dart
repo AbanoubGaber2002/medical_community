@@ -1,13 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+// Class to handle API communication
 class MyApiData {
   final String apiUrl;
 
   MyApiData(this.apiUrl);
 
-  Future<List<dynamic>> sendData(List<String> symptoms) async {
+  Future<Map<String, dynamic>> sendData(List<String> symptoms) async {
     var headers = {'Content-Type': 'application/json'};
     var body = json.encode({'symptoms': symptoms});
 
@@ -40,12 +42,12 @@ class _AskMeState extends State<AskMe> {
   ];
 
   int currentQuestionIndex = 0;
-  List<String> userSymptoms = [];
 
   @override
   void initState() {
     super.initState();
-    _apiData = MyApiData('http://10.0.2.2:5000/predict');
+    // Update this URL if running on a real device
+    _apiData = MyApiData('http://10.0.2.2:5000/diagnose'); 
     _addBotResponse(questions[currentQuestionIndex]);
   }
 
@@ -54,36 +56,27 @@ class _AskMeState extends State<AskMe> {
       _chatMessages.add(ChatMessage(text: message, isUser: isUser));
     });
 
-    if (!isUser) {
-      // Don't send the message to the server if it's from the bot
-      return;
+    if (isUser) {
+      List<String> symptoms = message.split(',').map((symptom) => symptom.trim()).toList();
+      _apiData.sendData(symptoms).then((response) {
+        _addBotResponse(response);
+      }).catchError((error) {
+        _addBotResponse("Error: No matching diseases found");
+      });
     }
-
-    // Split the user input by commas
-    List<String> symptoms = message.split(',').map((symptom) => symptom.trim()).toList();
-
-    _apiData.sendData(symptoms).then((response) {
-      _addBotResponse(response);
-    }).catchError((error) {
-      _addBotResponse("Error: $error");
-    });
   }
 
   void _addBotResponse(dynamic response) {
     setState(() {
       if (response is String) {
-        // If the response is a string, simply add it to the chat messages
         _chatMessages.add(ChatMessage(text: response, isUser: false));
-      } else if (response is List<dynamic>) {
-        // If the response is a list, assume it's a list of disease information
-        for (var info in response) {
-          _chatMessages.add(ChatMessage(
-            text: "Disease: ${info['disease']}\nDescription: ${info['Description']}\nAge: ${info['age']}\nGender: ${info['gender']}",
-            isUser: false,
-          ));
-        }
+      } else if (response is Map<String, dynamic>) {
+        // Assuming the response is a single disease info object
+        _chatMessages.add(ChatMessage(
+          text: "Disease: ${response['disease']}\nDescription: ${response['description']}\nAge: ${response['age']}\nGender: ${response['gender']}",
+          isUser: false,
+        ));
       } else {
-        // If the response is of an unexpected type, display an error message
         _chatMessages.add(ChatMessage(text: "Unexpected response from server", isUser: false));
       }
     });
